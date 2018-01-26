@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Value object class which is java representation of the Account information in JSON/XML format
  */
 
-@XmlRootElement(name="Account")
+@XmlRootElement
 public class AccountVO {
 	
 	private String name;
 	
-	private double balance;
+	private String balance;
 
 	public String getName() {
 		return name;
@@ -22,11 +22,11 @@ public class AccountVO {
 		this.name = name;
 	}
 
-	public double getBalance() {
+	public String getBalance() {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(String balance) {
 		this.balance = balance;
 	}
 

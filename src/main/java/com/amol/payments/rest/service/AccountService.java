@@ -1,11 +1,12 @@
 package com.amol.payments.rest.service;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.amol.payments.rest.vo.AccountVO;
 
@@ -17,17 +18,22 @@ import com.amol.payments.rest.vo.AccountVO;
 @Path("/account")
 public class AccountService {
 	
+		
 	@GET
-	public AccountVO getAccount(@RequestParam("name") String name) {
+	@Produces("application/json")
+	public AccountVO getAccount(@QueryParam("name") String name) {
+		System.out.println("Name:"+ name);
 		AccountVO account = new AccountVO();
 		account.setName(name);
 		return account;
 		
 	}
 
-	@POST
+	@POST 
+	@Consumes("application/json")
 	public Response addAccount(AccountVO account) {
-		System.out.println("Name:"+ account.getName());
+		System.out.println("POST->Name:"+ account.getName());
+		System.out.println("POST->Balance:"+ account.getBalance());
 		return Response.ok().build();		
 	}
 }
