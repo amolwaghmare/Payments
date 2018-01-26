@@ -10,9 +10,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AccountVO {
 	
+	private int accountNumber;
+	
 	private String name;
 	
 	private String balance;
+	
+
+	public int getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(int accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
 	public String getName() {
 		return name;

@@ -6,13 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Amol Waghmare
  *
  */
-@Entity (name="ACCOUNT")
+@Entity 
+@Table(name="ACCOUNT")
 public class Account implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	public Account() {
+		
+	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,6 +28,14 @@ public class Account implements Serializable {
 	private String name;
 	
 	private double balance;
+
+	public int getAccountnumber() {
+		return accountnumber;
+	}
+
+	public void setAccountnumber(int accountnumber) {
+		this.accountnumber = accountnumber;
+	}
 
 	public String getName() {
 		return name;
