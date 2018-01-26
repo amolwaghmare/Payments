@@ -28,6 +28,7 @@
   <jaxrs:server id="paymentService" address="/payments">
     <jaxrs:serviceBeans>
       <ref bean="accountService" />
+      <ref bean="transferService"/>
     </jaxrs:serviceBeans>
     <jaxrs:providers>
 			<ref bean='jsonProvider' />
@@ -35,4 +36,7 @@
   </jaxrs:server>
  
   <bean id="accountService" class="com.amol.payments.rest.service.AccountService" />
+ 
+  <bean id="transferService" class="com.amol.payments.rest.service.TransferService" />
+  
 </beans>
