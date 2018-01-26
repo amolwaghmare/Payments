@@ -27,7 +27,7 @@ public class DataConfig {
 		System.out.println(" Getting entityManagerFactory..");
 	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 	      em.setDataSource(dataSource());
-	      em.setPackagesToScan(new String[] { "com.amol.payments.entity" });
+	      em.setPackagesToScan(new String[] { "com.amol.payments.data" });
 	 
 	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 	      em.setJpaVendorAdapter(vendorAdapter);
@@ -54,10 +54,12 @@ public class DataConfig {
 	 
 	      return transactionManager;
 	   }
+	   
 	   Properties additionalProperties() {
 		      Properties properties = new Properties();
-		      properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		      properties.setProperty("hibernate.hbm2ddl.auto", "create");
 		      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		      properties.setProperty("hibernate.show_sql", "true");
 		      return properties;
 		   }
 }

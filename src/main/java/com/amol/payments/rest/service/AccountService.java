@@ -8,6 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.amol.payments.rest.service.helper.AccountServiceHelper;
 import com.amol.payments.rest.vo.AccountVO;
 
 /**
@@ -18,7 +21,9 @@ import com.amol.payments.rest.vo.AccountVO;
 @Path("/account")
 public class AccountService {
 	
-		
+	@Autowired
+	private AccountServiceHelper accountServiceHelper; 
+	
 	@GET
 	@Produces("application/json")
 	public AccountVO getAccount(@QueryParam("name") String name) {
@@ -31,9 +36,10 @@ public class AccountService {
 
 	@POST 
 	@Consumes("application/json")
-	public Response addAccount(AccountVO account) {
-		System.out.println("POST->Name:"+ account.getName());
-		System.out.println("POST->Balance:"+ account.getBalance());
+	public Response addAccount(AccountVO accountVO) {
+		System.out.println("POST->Name:"+ accountVO.getName());
+		System.out.println("POST->Balance:"+ accountVO.getBalance());
+		accountServiceHelper.addAccount(accountVO);
 		return Response.ok().build();		
 	}
 }
