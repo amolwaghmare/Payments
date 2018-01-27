@@ -2,12 +2,17 @@ package com.amol.payments.rest.service.helper;
 
 import java.util.Date;
 
+import javax.ws.rs.WebApplicationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.amol.payments.data.entity.Account;
 import com.amol.payments.data.entity.Transfer;
+import com.amol.payments.data.repository.AccountRepository;
 import com.amol.payments.data.repository.TransferRepository;
+import com.amol.payments.rest.exception.PaymentsException;
 import com.amol.payments.rest.vo.TransferVO;
 
 /**
@@ -20,10 +25,21 @@ public class TransferServiceHelper {
 	@Autowired
 	TransferRepository trasferRepository;
 	
+	@Autowired
+	AccountRepository accountRepository;
 	
 	@Transactional
-	public TransferVO transfer(TransferVO transferVO) {
+	public TransferVO transfer(TransferVO transferVO) throws PaymentsException {
 		System.out.println("From account: "+transferVO.getFromAccountnumber());
+		
+		//Check the balance of from account.
+		Account account = accountRepository.findOne(transferVO.getFromAccountnumber());
+		Double fromBalance = account.getBalance();
+		
+		if ((fromBalance - transferVO.getTransferAmount()) <= 0) {
+			throw new PaymentsException("ERR_101");
+			
+		}
 		Transfer transfer = new Transfer();
 		transfer.setFromAccountnumber(transferVO.getFromAccountnumber());
 		transfer.setToAccountnumber(transferVO.getToAccountnumber());

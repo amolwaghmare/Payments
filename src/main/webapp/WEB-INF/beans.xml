@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
- <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-	xmlns:cxf="http://cxf.apache.org/core"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:cxf="http://cxf.apache.org/core"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd
 	http://cxf.apache.org/jaxrs
 	http://cxf.apache.org/schemas/jaxrs.xsd http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
-  <!-- do not use import statements if CXFServlet init parameters link to this beans.xml --> 
- 
-  <import resource="classpath:META-INF/cxf/cxf.xml" />
-  <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-  <context:component-scan base-package="com.amol.payments" />
-  
-      <cxf:bus>
-        <cxf:features>
-            <cxf:logging/>
-        </cxf:features>
-    </cxf:bus>
-    <bean id="jsonProvider" 
-		class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
- 
-  <jaxrs:server id="paymentService" address="/payments">
-    <jaxrs:serviceBeans>
-      <ref bean="accountService" />
-      <ref bean="transferService"/>
-    </jaxrs:serviceBeans>
-    <jaxrs:providers>
+	<!-- do not use import statements if CXFServlet init parameters link to 
+		this beans.xml -->
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<context:component-scan base-package="com.amol.payments" />
+
+	<cxf:bus>
+		<cxf:features>
+			<cxf:logging />
+		</cxf:features>
+	</cxf:bus>
+
+
+	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+
+	<bean id="exceptionMapper" class="com.amol.payments.rest.exception.PaymentsExceptionMapper">
+		
+	</bean>
+
+	<jaxrs:server id="paymentService" address="/payments">
+		<jaxrs:serviceBeans>
+			<ref bean="accountService" />
+			<ref bean="transferService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
 			<ref bean='jsonProvider' />
+			 <bean class="com.amol.payments.rest.exception.PaymentsExceptionMapper" />
 		</jaxrs:providers>
-  </jaxrs:server>
- 
-  <bean id="accountService" class="com.amol.payments.rest.service.AccountService" />
- 
-  <bean id="transferService" class="com.amol.payments.rest.service.TransferService" />
-  
+	</jaxrs:server>
+
+	<bean id="accountService" class="com.amol.payments.rest.service.AccountService" />
+
+	<bean id="transferService" class="com.amol.payments.rest.service.TransferService" />
+
 </beans>
