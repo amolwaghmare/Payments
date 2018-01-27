@@ -37,12 +37,8 @@ public class TransferServiceHelper {
 		//Check the balance of from account.
 		Account account = accountRepository.findOne(transferVO.getFromAccountnumber());
 		Double fromBalance = account.getBalance();
+		validateBalance(fromBalance, transferVO.getTransferAmount() );
 		
-		if ((fromBalance - transferVO.getTransferAmount()) <= 0) {
-			logger.error("Not enough balance.");
-			throw new PaymentsException(" Not enough funds. ");
-			
-		}
 		Transfer transfer = new Transfer();
 		transfer.setFromAccountnumber(transferVO.getFromAccountnumber());
 		transfer.setToAccountnumber(transferVO.getToAccountnumber());
@@ -53,6 +49,19 @@ public class TransferServiceHelper {
 		
 		transferVO.setTransferNumber(transfer.getId());
 		return transferVO;
+	}
+
+	/** - Validates the transferAmount against the balance in the account.
+	 * @param fromBalance
+	 * @param transferAmount
+	 * @throws PaymentsException
+	 */
+	private void validateBalance(Double fromBalance, Double transferAmount) throws PaymentsException {
+		if ((fromBalance - transferAmount) <= 0) {
+			logger.error("Not enough balance.");
+			throw new PaymentsException(" Not enough funds. ");
+			
+		}
 	}
 
 }
