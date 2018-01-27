@@ -2,8 +2,8 @@ package com.amol.payments.rest.service.helper;
 
 import java.util.Date;
 
-import javax.ws.rs.WebApplicationException;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,8 @@ import com.amol.payments.rest.vo.TransferVO;
 @Component
 public class TransferServiceHelper {
 	
+	final static Logger logger = LogManager.getLogger(TransferServiceHelper.class);
+	
 	@Autowired
 	TransferRepository trasferRepository;
 	
@@ -30,14 +32,15 @@ public class TransferServiceHelper {
 	
 	@Transactional
 	public TransferVO transfer(TransferVO transferVO) throws PaymentsException {
-		System.out.println("From account: "+transferVO.getFromAccountnumber());
+		logger.debug("From account: "+transferVO.getFromAccountnumber());
 		
 		//Check the balance of from account.
 		Account account = accountRepository.findOne(transferVO.getFromAccountnumber());
 		Double fromBalance = account.getBalance();
 		
 		if ((fromBalance - transferVO.getTransferAmount()) <= 0) {
-			throw new PaymentsException("ERR_101");
+			logger.error("Not enough balance.");
+			throw new PaymentsException(" Not enough funds. ");
 			
 		}
 		Transfer transfer = new Transfer();
@@ -46,7 +49,7 @@ public class TransferServiceHelper {
 		transfer.setTransferAmount(transferVO.getTransferAmount());
 		transfer.setTransferDate(new java.sql.Date(new Date().getTime()));
 		transfer = trasferRepository.save(transfer);
-		System.out.println(" TransactionNumber: "+transfer.getId());
+		logger.debug(" TransactionNumber: "+transfer.getId());
 		
 		transferVO.setTransferNumber(transfer.getId());
 		return transferVO;

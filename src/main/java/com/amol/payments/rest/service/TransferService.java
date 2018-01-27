@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ import com.amol.payments.rest.vo.TransferVO;
 @Service
 public class TransferService {
 	
+	final static Logger logger = LogManager.getLogger(TransferService.class);
+	
+	
 	@Autowired
 	private TransferServiceHelper trasferServiceHelper; 
 	
@@ -30,7 +35,7 @@ public class TransferService {
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response transfer(TransferVO transferVO) throws PaymentsException {
-		System.out.println("POST->From account number:"+ transferVO.getFromAccountnumber());
+		logger.debug("POST->From account number:"+ transferVO.getFromAccountnumber());
 	
 		return Response.ok().entity(trasferServiceHelper.transfer(transferVO)).build();
 

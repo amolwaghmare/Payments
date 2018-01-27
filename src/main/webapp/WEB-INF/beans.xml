@@ -16,18 +16,17 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<context:component-scan base-package="com.amol.payments" />
 
-	<cxf:bus>
-		<cxf:features>
-			<cxf:logging />
-		</cxf:features>
-	</cxf:bus>
+<!-- 	<cxf:bus> -->
+<!-- 		<cxf:features> -->
+<!-- 			<cxf:logging /> -->
+<!-- 		</cxf:features> -->
+<!-- 	</cxf:bus> -->
 
 
 	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
 
-	<bean id="exceptionMapper" class="com.amol.payments.rest.exception.PaymentsExceptionMapper">
+	<bean id="exceptionMapper" class="com.amol.payments.rest.exception.PaymentsExceptionMapper" />
 		
-	</bean>
 
 	<jaxrs:server id="paymentService" address="/payments">
 		<jaxrs:serviceBeans>
@@ -35,8 +34,8 @@
 			<ref bean="transferService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
-			<ref bean='jsonProvider' />
-			 <bean class="com.amol.payments.rest.exception.PaymentsExceptionMapper" />
+			<ref bean="jsonProvider" />
+			 <ref bean="exceptionMapper" />
 		</jaxrs:providers>
 	</jaxrs:server>
 
